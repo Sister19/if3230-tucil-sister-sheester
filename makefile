@@ -1,5 +1,5 @@
 OUTPUT_FOLDER = bin
-
+hostfile = util/k01-06
 all: serial parallel
 
 mpi:
@@ -7,6 +7,9 @@ mpi:
 
 runmpi:
 	time mpirun -n 4 ./bin/mpi < test_case/$(file).txt > output/mpioutput.txt
+
+runmpihost:
+	time mpirun --hostfile $(hostfile) ./bin/mpi < test_case/$(file).txt > output/mpioutput.txt
 
 serial:
 	gcc src/serial/c/serial.c -o $(OUTPUT_FOLDER)/serial -lm
