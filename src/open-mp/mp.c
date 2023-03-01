@@ -24,12 +24,12 @@ void readMatrix(struct Matrix *m) {
 }
 
 double complex dft(struct Matrix *mat, int k, int l) {
-    double complex element = 0.0;
-    #pragma omp parallel for reduction(+:element)
+    double complex element = 0.0, arg, exponent;
+    #pragma omp parallel for private(arg) reduction(+:element)
     for (int m = 0; m < mat->size; m++) {
         for (int n = 0; n < mat->size; n++) {
-            double complex arg      = (k*m / (double) mat->size) + (l*n / (double) mat->size);
-            double complex exponent = cexp(-2.0I * M_PI * arg);
+            arg      = (k*m / (double) mat->size) + (l*n / (double) mat->size);
+            exponent = cexp(-2.0I * M_PI * arg);
             element += mat->mat[m][n] * exponent;
         }
     }
@@ -44,15 +44,17 @@ int main(void) {
     readMatrix(&source);
     freq_domain.size = source.size;
     
-    #pragma omp parallel for
+    #pragma omp distribute parallel for
     for (int k = 0; k < source.size; k++)
         for (int l = 0; l < source.size; l++)
             freq_domain.mat[k][l] = dft(&source, k, l);
 
     double complex sum = 0.0;
+    double complex el;
+    #pragma omp parallel for private(el) reduction(+:sum)
     for (int k = 0; k < source.size; k++) {
         for (int l = 0; l < source.size; l++) {
-            double complex el = freq_domain.mat[k][l];
+            el = freq_domain.mat[k][l];
             printf("(%lf, %lf) ", creal(el), cimag(el));
             sum += el;
         }
