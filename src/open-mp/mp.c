@@ -18,6 +18,7 @@ struct FreqMatrix {
 
 void readMatrix(struct Matrix *m) {
     scanf("%d", &(m->size));
+    #pragma omp parallel for
     for (int i = 0; i < m->size; i++)
         for (int j = 0; j < m->size; j++)
             scanf("%lf", &(m->mat[i][j]));
