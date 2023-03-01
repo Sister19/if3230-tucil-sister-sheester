@@ -3,9 +3,11 @@ hostfile = util/k01-06
 
 all: serial parallel
 
-run-all: runserial runmpi runmp
+run-all: runserial runparallel
 
-parallel: mpi mp
+parallel: mpi mp #cuda (uncomment if implemented)
+
+runparallel: runmpi runmp #runcuda (uncomment if implemented)
 
 serial:
 	gcc src/serial/c/serial.c -o $(OUTPUT_FOLDER)/serial -lm
@@ -27,3 +29,9 @@ mp:
 
 runmp:
 	time bin/mp < test_case/$(file).txt > output/mpoutput$(file).txt
+
+# cuda:
+# 	nvcc src/cuda/cuda.cu -o $(OUTPUT_FOLDER)/cuda
+
+# runcuda:
+# 	# implement how to run cuda nvidia
