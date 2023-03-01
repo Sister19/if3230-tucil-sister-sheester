@@ -44,7 +44,7 @@ int main(void) {
     readMatrix(&source);
     freq_domain.size = source.size;
     
-    #pragma omp distribute parallel for
+    #pragma omp parallel for
     for (int k = 0; k < source.size; k++)
         for (int l = 0; l < source.size; l++)
             freq_domain.mat[k][l] = dft(&source, k, l);
