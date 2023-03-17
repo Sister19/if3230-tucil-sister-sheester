@@ -22,5 +22,5 @@ sudo apt-get install build-essential
 3. If you want to run only OpenMPI program, run with `make runmpi file={insert testcase filename}`, e.g. `make runmpi file=32`
 4. If you want to run only OpenMP program, run with `make runmp file={insert testcase filename}`, e.g. `make runmp file=32`
 
-### How to Run (For OpenMPI and OpenMP)
+### How to Run (For Cuda)
 1. Compile and run inside the Google Collab/Jupyter Notebook
